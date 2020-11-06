@@ -34,8 +34,12 @@ func parseTag(tag string) (string, string) {
 	return s[0], options["default"]
 }
 
-func Decode(m interface{}, v url.Values) {
-	val, _ := getType(m)
+func Decode(m interface{}, v url.Values) error {
+	val, err := getType(m)
+	if err != nil {
+		return err
+	}
+
 	typ := val.Type()
 	for i := 0; i < typ.NumField(); i++ {
 		sf := typ.Field(i)
@@ -90,4 +94,5 @@ func Decode(m interface{}, v url.Values) {
 			}
 		}
 	}
+	return nil
 }
